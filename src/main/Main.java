@@ -6,8 +6,15 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
         List<Pessoa> pessoas = new ArrayList<>();
+
+        cadastrarPessoa(pessoas);
+
+        mostrarPessoas(pessoas);
+    }
+
+    static void cadastrarPessoa(List<Pessoa> pessoas){
+        Scanner scan = new Scanner(System.in);
 
         for (int i = 0; i < 2; i++) {
             System.out.println("Digite o nome: ");
@@ -32,7 +39,9 @@ public class Main {
         }
 
         scan.close();
+    }
 
+    static void mostrarPessoas(List<Pessoa> pessoas){
         for (Pessoa pessoa : pessoas)
         {
             System.out.println(pessoa.getNome() + ", " + pessoa.getIdade() + " anos");
