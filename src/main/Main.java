@@ -7,50 +7,83 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         List<Pessoa> pessoas = new ArrayList<>();
-
-        cadastrarPessoa(pessoas);
-
-        mostrarPessoas(pessoas);
-    }
-
-    static void cadastrarPessoa(List<Pessoa> pessoas){
         Scanner scan = new Scanner(System.in);
 
-        for (int i = 0; i < 2; i++) {
-            System.out.println("Digite o nome: ");
-            String nome = scan.next();
-            System.out.println("Digite a idade: ");
-            int idade = scan.nextInt();
+        while (true) {
+            switch (menu(scan)){
+                case 1 -> cadastrarPessoa(pessoas, scan);
 
-            List<Endereco> enderecos = new ArrayList<>();
+                case 2 -> mostrarPessoa(pessoas, scan);
 
-            for (int j = 0; j < 2; j++) {
-                System.out.println("Endereço " + (j+1) + " :");
+                case 3 -> System.exit(0);
 
-                System.out.println("Digite o nome da rua: ");
-                String rua = scan.next();
-                System.out.println("Digite o numero da residência: ");
-                int numero = scan.nextInt();
-                enderecos.add(new Endereco(rua, numero));
-                System.out.println("");
+                default -> System.out.println("Valor inválido!");
             }
-
-            pessoas.add(new Pessoa(nome, idade, enderecos));
         }
-
-        scan.close();
     }
 
-    static void mostrarPessoas(List<Pessoa> pessoas){
+    static void cadastrarPessoa(List<Pessoa> pessoas, Scanner scan){
+        System.out.println("Digite o nome: ");
+        String nome = scan.next();
+        System.out.println("Digite a idade: ");
+        int idade = scan.nextInt();
+
+        List<Endereco> enderecos = new ArrayList<>();
+        int cont = 1;
+        while (true) {
+            System.out.println("Endereço " + cont + " : (Digite 0 para sair)");
+
+            System.out.println("Digite o nome da rua: ");
+            String rua = scan.next();
+
+            if (rua.equals("0")) {
+                break;
+            }
+
+            System.out.println("Digite o numero da residência: ");
+            int numero = scan.nextInt();
+            enderecos.add(new Endereco(rua, numero));
+
+            cont++;
+        }
+
+        pessoas.add(new Pessoa(nome, idade, enderecos));
+    }
+
+    static void mostrarPessoa(List<Pessoa> pessoas, Scanner scan){
+        System.out.println("Digite o nome: ");
+        String nome = scan.next();
+        boolean find = false;
+
         for (Pessoa pessoa : pessoas)
         {
-            System.out.println(pessoa.getNome() + ", " + pessoa.getIdade() + " anos");
-            System.out.println("Endereços:");
-            for (int i = 0; i < pessoa.getEnderecos().size(); i++)
-            {
-                System.out.println(pessoa.getEnderecos().get(i).getRua() + ", " + pessoa.getEnderecos().get(i).getNumero());
+            if (pessoa.getNome().equals(nome)){
+                System.out.println("");
+                System.out.println(pessoa.getNome() + ", " + pessoa.getIdade() + " anos");
+                System.out.println("Endereços:");
+                for (int i = 0; i < pessoa.getEnderecos().size(); i++)
+                {
+                    System.out.println(pessoa.getEnderecos().get(i).getRua() + ", " + pessoa.getEnderecos().get(i).getNumero());
+                }
+                System.out.println("");
+
+                find = true;
             }
+        }
+
+        if (!find){
+            System.out.println("Pessoa não encontrada!");
             System.out.println("");
         }
+    }
+
+    static int menu(Scanner scan){
+        System.out.println("");
+        System.out.println("1 - Cadastrar pessoa");
+        System.out.println("2 - Mostrar pessoa");
+        System.out.println("3 - Sair");
+        System.out.println("");
+
+        return scan.nextInt();
     }
 }
